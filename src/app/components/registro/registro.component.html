@@ -1,1 +1,86 @@
-<p>registro works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <h2 *ngIf="this.formActual=='Paciente'">Nuevo Paciente</h2>
+            <h2 *ngIf="this.formActual=='Especialista'">Nuevo Especialista</h2>
+
+        </div>
+        <div class="col-6" style="text-align: end;">
+            <button class="btn btn-primary" *ngIf="this.formActual=='Especialista'" (click)="this.formActual='Paciente'">Registrar Paciente</button>
+            <button class="btn btn-primary" *ngIf="this.formActual=='Paciente'" (click)="this.formActual='Especialista'">Registrar Especialista</button>
+
+        </div>
+    </div>
+    
+    
+
+    
+    <form *ngIf="this.formActual=='Paciente'" (ngSubmit)="registrarPaciente()" [formGroup]="formPaciente">
+
+        <div class="row row-form">
+            <div class="col-6">
+                <label>Nombre</label>
+                <input type="text" formControlName="nombre" class="form-control" [class]="isValidPaciente('nombre')"/>
+            </div>
+            <div class="col-6">
+                <label>Apellido</label>
+                <input type="text" formControlName="apellido" class="form-control" [class]="isValidPaciente('apellido')"/>
+            </div>
+            
+        </div>
+        <div class="row row-form">
+            <div class="col-6">
+                <label>DNI</label>
+                <input type="text" formControlName="dni" class="form-control" [class]="isValidPaciente('dni')"/>
+            </div>
+            <div class="col-6">
+                <label>Edad</label>
+                <input type="number" formControlName="edad" class="form-control" [class]="isValidPaciente('edad')"/>
+            </div>
+            
+        </div>
+
+        <div class="row row-form">
+            <div class="col-6">
+                <label>Email</label>
+                <input type="email" formControlName="email" class="form-control" [class]="isValidPaciente('email')"/>
+            </div>
+            <div class="col-6">
+                <label>Contraseña</label>
+                <input type="password" formControlName="password" class="form-control" [class]="isValidPaciente('passowrd')"/>
+            </div>
+            
+        </div>
+
+
+        <div class="row row-form">
+            <div class="col-6">
+                <label class="custom-file-label" for="inputGroupFile01">Foto</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                </div>
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                  
+                </div>
+              </div>
+
+            </div>
+            <div class="col-6">
+                <label class="custom-file-label" for="inputGroupFile01">Foto</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                </div>
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" id="inputGroupFile02" aria-describedby="inputGroupFileAddon01"> 
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <button type="submit" class="btn btn-primary animate__animated animate__backInLeft " [disabled]="formPaciente.invalid">Registrarse</button>
+        
+		
+    </form>
+    
+</div>
