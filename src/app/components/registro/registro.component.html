@@ -1,13 +1,13 @@
-<div class="container">
+<!--<div class="container">
     <div class="row">
         <div class="col-6">
-            <h2 *ngIf="this.formActual=='Paciente'">Nuevo Paciente</h2>
-            <h2 *ngIf="this.formActual=='Especialista'">Nuevo Especialista</h2>
+            <h2 *ngIf="this.tipo=='Paciente'">Nuevo Paciente</h2>
+            <h2 *ngIf="this.tipo=='Especialista'">Nuevo Especialista</h2>
 
         </div>
         <div class="col-6" style="text-align: end;">
-            <button class="btn btn-primary" *ngIf="this.formActual=='Especialista'" (click)="this.formActual='Paciente'">Registrar Paciente</button>
-            <button class="btn btn-primary" *ngIf="this.formActual=='Paciente'" (click)="this.formActual='Especialista'">Registrar Especialista</button>
+            <button class="btn btn-primary" *ngIf="this.tipo=='Especialista'" (click)="this.tipo='Paciente'">Registrar Paciente</button>
+            <button class="btn btn-primary" *ngIf="this.tipo=='Paciente'" (click)="this.tipo='Especialista'">Registrar Especialista</button>
 
         </div>
     </div>
@@ -15,45 +15,46 @@
     
 
     
-    <form *ngIf="this.formActual=='Paciente'" (ngSubmit)="registrarPaciente()" [formGroup]="formPaciente">
-
-        <div class="row row-form">
+    <form novalidate (ngSubmit)="onRegisterPaciente()" [formGroup]="pacienteRegForm" *ngIf="this.tipo == 'Paciente'">
+        <fieldset>
+        <div class="row row-form form-group">
             <div class="col-6">
                 <label>Nombre</label>
-                <input type="text" formControlName="nombre" class="form-control" [class]="isValidPaciente('nombre')"/>
+                <input type="text" formControlName="nombre" class="form-control" id="nombre" placeholder="Nombre" [class]="isValidPaciente('nombre')"/>
             </div>
+
             <div class="col-6">
                 <label>Apellido</label>
-                <input type="text" formControlName="apellido" class="form-control" [class]="isValidPaciente('apellido')"/>
+                <input type="text" formControlName="apellido" class="form-control" id="apellido" placeholder="Apellido" [class]="isValidPaciente('apellido')"/>
             </div>
             
         </div>
-        <div class="row row-form">
+        <div class="row row-form form-group">
             <div class="col-6">
                 <label>DNI</label>
-                <input type="text" formControlName="dni" class="form-control" [class]="isValidPaciente('dni')"/>
+                <input type="text" formControlName="dni" class="form-control" id="dni" placeholder="DNI" [class]="isValidPaciente('dni')"/>
             </div>
             <div class="col-6">
                 <label>Edad</label>
-                <input type="number" formControlName="edad" class="form-control" [class]="isValidPaciente('edad')"/>
+                <input type="number" formControlName="edad" class="form-control" id="edad" placeholder="Edad" [class]="isValidPaciente('edad')"/>
             </div>
             
         </div>
 
-        <div class="row row-form">
+        <div class="row row-form form-group">
             <div class="col-6">
                 <label>Email</label>
-                <input type="email" formControlName="email" class="form-control" [class]="isValidPaciente('email')"/>
+                <input type="correo" formControlName="correo" id="correo" placeholder="Correo electrónico" class="form-control" [class]="isValidPaciente('email')"/>
             </div>
             <div class="col-6">
                 <label>Contraseña</label>
-                <input type="password" formControlName="password" class="form-control" [class]="isValidPaciente('passowrd')"/>
+                <input type="password" formControlName="clave" id="clave" placeholder="Contraseña" class="form-control" [class]="isValidPaciente('clave')"/>
             </div>
             
         </div>
 
 
-        <div class="row row-form">
+        <!--<div class="row row-form form-group">
             <div class="col-6">
                 <label class="custom-file-label" for="inputGroupFile01">Foto</label>
               <div class="input-group mb-3">
@@ -78,9 +79,316 @@
             </div>
           </div>
         
-          <button type="submit" class="btn btn-primary animate__animated animate__backInLeft " [disabled]="formPaciente.invalid">Registrarse</button>
+
+          <div class="row row-form form-group">
+            <div class="col-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                </div>
+                <div class="custom-file">
+                  <input type="file" (change)="CambioFotos($event,1)" id="foto1" class="sinError">
+
+                </div>
+              </div>
+
+            </div>
+            <div class="col-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                </div>
+                <div class="custom-file">
+                  <input type="file" (change)="CambioFotos($event,2)" id="foto2" class="sinError">
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          
+          <button type="submit" class="btn btn-primary botonesLanding animate__animated animate__backInLeft " [disabled]="pacienteRegForm.invalid">
+            Registrarse
+          </button>
+          <button type="button" class="btn btn-success botonesLanding animate__animated animate__backInRight" routerLink="../login">
+            Inicio de sesion
+          </button>
         
-		
+		</fieldset>
     </form>
     
-</div>
+</div>-->
+
+  <div class="container">
+
+        <div class="row">
+            <div class="col-6">
+                <h2 *ngIf="this.tipo=='Paciente'">Nuevo Paciente</h2>
+                <h2 *ngIf="this.tipo=='Especialista'">Nuevo Especialista</h2>
+    
+            </div>
+            <div class="col-6" style="text-align: end;">
+                <button class="btn btn-primary" *ngIf="this.tipo=='Especialista'" (click)="this.tipo='Paciente'">Registrar Paciente</button>
+                <button class="btn btn-primary" *ngIf="this.tipo=='Paciente'" (click)="this.tipo='Especialista'">Registrar Especialista</button>
+    
+            </div>
+        </div>
+  
+  
+  
+        <form class="animate__animated animate__backInDown" novalidate (ngSubmit)="onRegisterPaciente()" [formGroup]="pacienteRegForm" *ngIf="this.tipo == 'Paciente'">
+          <fieldset>
+  
+            <div class="row row-form form-group">
+  
+              <div class="col-6">
+                <label>Nombre</label>
+                <input type="text" class="form-control" id="nombre" placeholder="Nombre" formControlName="nombre"
+                  [class]="isValidPaciente('nombre')" />
+                <div class="invalid-feedback" style="font-family: sans-serif;">
+                  <span
+                    *ngIf="pacienteRegForm.controls.nombre.errors?.required && pacienteRegForm.controls.nombre.touched">
+                    Por favor ingrese su nombre
+                  </span>
+                </div>
+              </div>
+  
+  
+              <div class="col-6">
+                <label>Apellido</label>
+                <input type="text" class="form-control" id="apellido" placeholder="Apellido" formControlName="apellido"
+                  [class]="isValidPaciente('apellido')" />
+                <div class="invalid-feedback" style="font-family: sans-serif;">
+                  <span class="invalid"
+                    *ngIf="pacienteRegForm.controls.apellido.errors?.required && pacienteRegForm.controls.apellido.touched">El
+                    apellido es requerido
+                  </span>
+                </div>
+              </div>
+            </div>
+  
+  
+            <div class="row row-form form-group">
+              <div class="col-2">
+                <label>Edad</label>
+                <input type="number" class="form-control" id="edad" placeholder="Edad" formControlName="edad"
+                  [class]="isValidPaciente('edad')" />
+                <div class="invalid-feedback" style="font-family: sans-serif;">
+                  <span *ngIf="pacienteRegForm.get('edad').errors?.required">
+                    Por favor ingrese su edad
+                  </span>
+                </div>
+              </div>
+  
+  
+              <div class="col-5">
+                <label>DNI</label>
+                <input type="number" class="form-control" id="dni" placeholder="DNI" formControlName="dni"
+                  [class]="isValidPaciente('dni')" />
+                <div class="invalid-feedback" style="font-family: sans-serif;">
+                  <span *ngIf="pacienteRegForm.get('dni').errors?.required">
+                    Por favor ingrese su documento
+                  </span>
+  
+                </div>
+              </div>
+
+              <div class="col-5">
+                <label>Obra Social</label>
+                <input type="text" class="form-control" id="obraSocial" placeholder="Obra Social" formControlName="obraSocial"
+                      [class]="isValidPaciente('obraSocial')" />
+                    <div class="invalid-feedback" style="font-family: sans-serif;">
+                      <span *ngIf="pacienteRegForm.get('obraSocial').errors?.required">
+                        Por favor ingrese su Obra Social
+                      </span>
+                    </div>
+              </div>
+            </div>
+  
+  
+            <div class="form-group row row-form">
+
+                <div class="col-6">
+                    <label>Correo electrónico</label>
+                    <input type="correo" class="form-control" id="correo" placeholder="Correo electrónico" formControlName="correo"
+                      [class]="isValidPaciente('correo')" />
+                    <div class="invalid-feedback" style="font-family: sans-serif;">
+                      <span *ngIf="pacienteRegForm.get('correo').errors?.required">
+                        Por favor ingrese su correo
+                      </span>
+                      <span *ngIf="pacienteRegForm.get('correo').errors?.pattern">
+                        Debe ser una direccion valida
+                      </span>
+                    </div>
+                  </div>
+
+                <div class="col-6">
+                    <label>Contraseña</label>
+                    <input type="password" class="form-control" id="clave" placeholder="Contraseña" formControlName="clave"
+                [class]="isValidPaciente('clave')" />
+              <div class="invalid-feedback" style="font-family: sans-serif;">
+                <span *ngIf="pacienteRegForm.get('clave').errors?.required">
+                  Por favor ingrese su clave
+                </span>
+              </div>
+                </div>
+
+                
+            </div>
+  
+            
+  
+
+  
+  
+            <div class="row row-form form-group">
+                
+              <div class="col-6">
+                <label>Imagen 1</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" (change)="CambioFotos($event,1)" id="foto1" class="sinError">
+  
+                  </div>
+                </div>
+  
+              </div>
+              <div class="col-6">
+                <label>Imagen 2</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" (change)="CambioFotos($event,2)" id="foto2" class="sinError">    
+                  </div>
+                </div>
+  
+              </div>
+            </div>
+  
+            <button type="submit" class="btn btn-primary botonesLanding animate__animated animate__backInLeft " [disabled]="pacienteRegForm.invalid">
+              Registrarse
+            </button>
+            <br>
+          </fieldset>
+        </form>
+  
+  
+  
+  
+  
+        <form  class="animate__animated animate__backInDown" novalidate (ngSubmit)="onRegisterEspecialista()" [formGroup]="especialistaRegForm"
+          *ngIf="this.tipo == 'Especialista'">
+          <fieldset>
+  
+            <div class="row row-form form-group">
+              <div class="col-6">
+                <input type="text" class="form-control" id="nombre" placeholder="Nombre" formControlName="nombre"
+                  [class]="isValidEspecialista('nombre')" />
+                <div class="invalid-feedback" style="font-family: sans-serif;">
+                  <span
+                    *ngIf="especialistaRegForm.controls.nombre.errors?.required && especialistaRegForm.controls.nombre.touched">
+                    Por favor ingrese su nombre
+                  </span>
+                </div>
+              </div>
+  
+  
+              <div class="col-6">
+                <input type="text" class="form-control" id="apellido" placeholder="Apellido" formControlName="apellido"
+                  [class]="isValidEspecialista('apellido')" />
+                <div class="invalid-feedback" style="font-family: sans-serif;">
+                  <span class="invalid"
+                    *ngIf="especialistaRegForm.controls.apellido.errors?.required && especialistaRegForm.controls.apellido.touched">El
+                    apellido es requerido
+                  </span>
+                </div>
+              </div>
+            </div>
+  
+            <div class="row row-form form-group">
+              <div class="col-6">
+                <input type="number" class="form-control" id="edad" placeholder="Edad" formControlName="edad"
+                  [class]="isValidEspecialista('edad')" />
+                <div class="invalid-feedback" style="font-family: sans-serif;">
+                  <span *ngIf="especialistaRegForm.get('edad').errors?.required">
+                    Por favor ingrese su edad
+                  </span>
+                </div>
+              </div>
+  
+  
+              <div class="col-6">
+                <input type="number" class="form-control" id="dni" placeholder="DNI" formControlName="dni"
+                  [class]="isValidEspecialista('dni')" />
+                <div class="invalid-feedback" style="font-family: sans-serif;">
+                  <span *ngIf="especialistaRegForm.get('dni').errors?.required">
+                    Por favor ingrese su documento
+                  </span>
+  
+                </div>
+              </div>
+            </div>
+  
+  
+            <div class="form-group row row-form">
+                <div class="col-6">
+                    <input type="correo" class="form-control" id="correo" placeholder="Correo" formControlName="correo"
+                    [class]="isValidEspecialista('correo')" />
+                  <div class="invalid-feedback" style="font-family: sans-serif;">
+                    <span *ngIf="especialistaRegForm.get('correo').errors?.required">
+                      Por favor ingrese su correo
+                    </span>
+                    <span *ngIf="especialistaRegForm.get('correo').errors?.pattern">
+                      Debe ser una direccion valida
+                    </span>
+                  </div>
+                </div>
+                <div class="col-6">
+                    <input type="password" class="form-control" id="clave" placeholder="Clave" formControlName="clave"
+                    [class]="isValidEspecialista('clave')" />
+                  <div class="invalid-feedback" style="font-family: sans-serif;">
+                    <span *ngIf="especialistaRegForm.get('clave').errors?.required">
+                      Por favor ingrese su clave
+                    </span>
+                  </div>
+                </div>
+             
+            </div>
+  
+            <div class="form-group row row-form">
+                <div class="col-6">
+                    <input type="text" class="form-control" id="especialidades" placeholder="Especialidades" formControlName="especialidades"
+                    [class]="isValidEspecialista('especialidades')" />
+                  <div class="invalid-feedback" style="font-family: sans-serif;">
+                    <span *ngIf="especialistaRegForm.get('especialidades').errors?.required">
+                      Por favor ingrese su especialidad
+                    </span>
+                  </div>
+                </div>
+                <div class="col-6">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        </div>
+                        <div >
+                          <input type="file" (change)="CambioFotos($event,1)" id="foto1" class="sinError">
+                   
+                        </div>
+                      </div>
+                </div>
+ 
+            </div>
+  
+            <button type="submit" class="btn btn-primary botonesLanding animate__animated animate__backInLeft" [disabled]="especialistaRegForm.invalid">
+              Registrarse
+            </button>
+            <br>
+          </fieldset>
+        </form>
+  
+    </div>
+ 
+  
+
+  

@@ -1,11 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Especialista } from './../../clases/especialista';
+import { AuthService } from './../../services/auth.service';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Especialista } from 'src/app/clases/especialista';
-import { Paciente } from 'src/app/clases/paciente';
-import { UsuarioService } from 'src/app/services/usuario.service';
+import { Paciente } from './../../clases/paciente';
+
+import { UsuarioService } from '../../services/usuario.service';
 import { AngularFireStorage } from '@angular/fire/storage';
 import * as firebase from 'firebase';
+
+import Swal, { SweetAlertIcon } from 'sweetalert2';
+
+
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.component.html',
@@ -13,118 +19,248 @@ import * as firebase from 'firebase';
 })
 export class RegistroComponent implements OnInit {
 
-  formPaciente: FormGroup;
-  formEspecialista: FormGroup;
-  unPaciente:Paciente;
-  pathFoto: any;
-  formActual="Paciente";
-  private isEmail =/\S+@\S+\.\S+/;
+  pacienteRegForm: FormGroup;
 
-  constructor( private fb: FormBuilder,private usuarioSrv:UsuarioService,private storage:AngularFireStorage ) {
-    this.crearFormulario();
+  especialistaRegForm: FormGroup;
+
+  public unPaciente: Paciente;
+  public unEspecialista: Especialista;
+  public tipo: string;
+  public pathFoto: any;
+  public pathFoto2: any;
+
+  public id: any;
+  public foto: any;
+  public foto1: any;
+  public foto2: any;
+  public fotoCargada1: any;
+  public fotoCargada2: any;
+
+  correo: string;
+  clave: string;
+
+  nombre: string;
+  apellido: string;
+
+  dni: number;
+  edad: number;
+  obraSocial: string;
+
+  especialidades: any;
+
+
+  private isEmail = /\S+@\S+\.\S+/;
+
+
+
+  @Output() emitRegister: EventEmitter<any> = new EventEmitter();
+  
+
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private usuarioSrv: UsuarioService,
+    private storage: AngularFireStorage,
+    private authSVC: AuthService
+  ) {
+
+    this.tipo = 'Paciente'
   }
-
 
   ngOnInit(): void {
-    
+    this.initForm();
   }
 
-  
-  crearFormulario() {
-    
-    /*this.formPaciente = this.fb.group({
-      nombre: ['', [Validators.required, Validators.minLength(2)]],
-      apellido: ['', [Validators.required, Validators.minLength(2)]],
-      dni:['',[Validators.required,Validators.minLength(8),Validators.maxLength(8)]],
-      edad: ['', [Validators.required]],
-      email: ['', [Validators.required,Validators.pattern(this.isEmail)]],
-      password: ['', [Validators.required]],
-      foto1: ['', [Validators.required]],
-      foto2: ['', [Validators.required]]
-  });*/
-
-  this.formPaciente = this.fb.group({
-    nombre:new FormControl( '', [Validators.required, Validators.minLength(2)]),
-    apellido:new FormControl( '', [Validators.required, Validators.minLength(2)]),
-    dni:new FormControl('',[Validators.required,Validators.minLength(8),Validators.maxLength(8)]),
-    edad:new FormControl( '', [Validators.required]),
-    email:new FormControl( '', [Validators.required,Validators.pattern(this.isEmail)]),
-    password:new FormControl( '', [Validators.required]),
-    foto1:new FormControl( '', [Validators.required]),
-    foto2:new FormControl( '', [Validators.required])
-});
-console.log(this.formPaciente)
+  CambioFotos(e, numero) {
+    if (numero == 1) {
+      this.foto1 = e.target.files[0];
+      console.log(this.foto1);
+    } else {
+      this.foto2 = e.target.files[0];
+      console.log(this.foto2);
+    }
   }
+
+  SubirFotos(id: string) {
+    console.log("Subir Fotos: Foto1: ",this.foto1," Foto2: ",this.foto2);
+    if (this.foto1) {
+      this.fotoCargada1 = `/usuarios/${id}/${1}`;
+      this.storage.upload(this.fotoCargada1, this.foto1);
+      
+    } else {
+      this.fotoCargada1 = `/usuarios/default.png`;
+    }
+
+    if (this.foto2) {
+      this.fotoCargada2 = `/usuarios/${id}/${2}`;
+      this.storage.upload(this.fotoCargada2, this.foto2);
+    } else {
+      this.fotoCargada2 = `/usuarios/default.png`;
+    }
+  }
+
+
+
+
+
+  onRegisterPaciente() {
+    if (this.pacienteRegForm.valid) {
+
+      
+      this.nombre = this.pacienteRegForm.value.nombre;
+      this.apellido = this.pacienteRegForm.value.apellido;
+      this.correo = this.pacienteRegForm.value.correo;
+      this.clave = this.pacienteRegForm.value.clave;
+      this.dni = this.pacienteRegForm.value.dni;
+      this.edad = this.pacienteRegForm.value.edad;
+      this.obraSocial = this.pacienteRegForm.value.obraSocial;
+      /*this.foto1 = this.fotoCargada1;
+      this.foto2 = this.fotoCargada2;*/
+      console.log(this.foto1,"y",this.foto2);
+      this.registrarPaciente();
+    }
+  }
+
+
+
+  onRegisterEspecialista() {
+    if (this.especialistaRegForm.valid) {
+
+
+      this.nombre = this.especialistaRegForm.value.nombre;
+      this.apellido = this.especialistaRegForm.value.apellido;
+      this.correo = this.especialistaRegForm.value.correo;
+      this.clave = this.especialistaRegForm.value.clave;
+      this.edad = this.especialistaRegForm.value.edad;
+      this.dni = this.especialistaRegForm.value.dni;
+      this.especialidades = this.especialistaRegForm.value.especialidades;
+      this.foto1 = this.fotoCargada1;
+
+
+      this.registrarEspecialista();
+    }
+  }
+
+
+
+
+  registrarPaciente() {
+
+
+    this.authSVC.Register(this.correo, this.clave).then(response => {
+
+      this.SubirFotos(response.user.uid);
+
+      this.id = response.user.uid;
+
+      let paciente = new Paciente(this.nombre, this.apellido, this.correo, this.clave, this.edad, this.dni, this.obraSocial, this.fotoCargada1, this.fotoCargada2);
+      this.usuarioSrv.RegistrarPaciente(paciente);
+      Swal.fire({
+        title: 'Registro exitoso!',
+        text: 'Se le ha enviado un mail de confirmacion, por favor, revise su casilla para poder ingresar',
+        icon: 'success',
+        didDestroy: () => {
+          this.router.navigateByUrl('');
+        }
+
+      })
+
+    }).catch(error => { console.log(error); });
+
+
+  }
+
+
+  registrarEspecialista() {
+
+
+    this.authSVC.Register(this.correo, this.clave).then(response => {
+
+      this.SubirFotos(response.user.uid);
+
+      this.id = response.user.uid;
+      let especialista = new Especialista(this.nombre, this.apellido, this.correo, this.clave, this.edad, this.dni, this.especialidades,this.fotoCargada1);
+      this.usuarioSrv.RegistrarEspecialista(especialista);
+
+      Swal.fire({
+        title: 'Registro exitoso!',
+        text: 'Se le ha enviado un mail de confirmacion, por favor, revise su casilla para poder ingresar. Ademas como especialista debe aguardar que un administrador lo valide.',
+        icon: 'success',
+        didDestroy: () => {
+          this.router.navigateByUrl('');
+        }
+
+      })
+
+    }).catch(error => { console.log(error); });
+
+  }
+
 
   isValidPaciente(field: string): string {
-    const validateField = this.formPaciente.get(field);
+    const validateField = this.pacienteRegForm.get(field);
     return !validateField.valid && validateField.touched
       ? 'is-invalid'
       : validateField.touched
-      ? 'is-valid'
-      : '';
+        ? 'is-valid'
+        : '';
   }
+
 
   isValidEspecialista(field: string): string {
-    const validateField = this.formEspecialista.get(field);
+    const validateField = this.especialistaRegForm.get(field);
     return !validateField.valid && validateField.touched
       ? 'is-invalid'
       : validateField.touched
-      ? 'is-valid'
-      : '';
+        ? 'is-valid'
+        : '';
   }
 
-  onUpload($event) {
-    console.log($event)
-    const file = $event.target.files[0];
-    const filePath = 'upload/imagen.png';
-    const ref = this.storage.ref(filePath);
-    const task = this.storage.upload(filePath,file);
-    this.guardarReferencia(filePath);
-    
-  }
+  private initForm(): void {
+    this.pacienteRegForm = this.fb.group({
+      correo: ['', [Validators.required, Validators.pattern(this.isEmail)]],
+      clave: ['', [Validators.required, Validators.minLength(8)]],
+      nombre: ['', [Validators.required]],
+      apellido: ['', [Validators.required]],
+      obraSocial: ['', [Validators.required]],
+      edad: ['', [Validators.required]],
+      dni: ['', [Validators.required]]
+    });
 
-  guardarReferencia(pReferencia: string) {
-    let storages = firebase.default.storage();
-    let storageRef = storages.ref();
-    let spaceRef = storageRef.child(pReferencia);
-    spaceRef.getDownloadURL().then(url => {
-      this.pathFoto = url
+
+    this.especialistaRegForm = this.fb.group({
+      correo: ['', [Validators.required, Validators.pattern(this.isEmail)]],
+      clave: ['', [Validators.required, Validators.minLength(8)]],
+      nombre: ['', [Validators.required]],
+      apellido: ['', [Validators.required]],
+      edad: ['', [Validators.required]],
+      dni: ['', [Validators.required]],
+      especialidades: ['', [Validators.required]]
     });
   }
 
-  registrarPaciente(){
-    //if (this.formPaciente.valid) {
 
 
-      this.unPaciente.nombre = this.formPaciente.value.nombre;
-      this.unPaciente.apellido = this.formPaciente.value.apellido;
-      this.unPaciente.correo = this.formPaciente.value.correo;
-      this.unPaciente.clave = this.formPaciente.value.clave;
-      this.unPaciente.dni = this.formPaciente.value.dni;
-      this.unPaciente.edad = this.formPaciente.value.edad;
-      this.unPaciente.obraSocial = this.formPaciente.value.obraSocial;
 
-      console.log(this.unPaciente);
-      //this.usuarioSrv.CrearPaciente(this.unPaciente);
-      /*this.usuarioSrv
-        .BuscarUsuarioPac(this.unPaciente)
-        .valueChanges()
-        .subscribe((result) => {
-          if (result.length == 1) {
-            console.log('ERROR usuario ya registrado');
-          } else {
-            localStorage.setItem('token', this.unPaciente.correo);
-            this.usuarioSrv.CrearPaciente(this.unPaciente);
-            this.router.navigateByUrl('home');
-            console.log('Usuario registrado!');
-          }
-        });*/
-      
-    //}
+  /*alert(icon: SweetAlertIcon, text: string) {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top',
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+
+    Toast.fire({
+      icon: icon,
+      title: text
+    })
   }
 
-
-
-
+*/
 }

@@ -1,77 +1,106 @@
+import { AuthService } from './auth.service';
+import { Especialista } from './../clases/especialista';
+import { Paciente } from './../clases/paciente';
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore/';
-import { AngularFireAuth,AngularFireAuthModule } from '@angular/fire/auth';
+//import { HttpClient } from '@angular/common/http';
+import {AngularFirestore,AngularFirestoreCollection,} from '@angular/fire/firestore/';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { Usuario } from '../clases/usuario';
 
-import {Usuario} from '../clases/usuario'
+
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UsuarioService {
+  ruteDeLaColeccionUsuarios='/usuarios';
+  rutaDeLaColeccionPaciente = '/pacientes';
+  rutaDeLaColeccionEspecialista = '/especialistas';
+  referenciaAlaColeccionPaciente: AngularFirestoreCollection<Paciente>;
+  referenciaAlaColeccionEspecialista: AngularFirestoreCollection<Especialista>;
+  referenciaAlaColeccionUsuario: AngularFirestoreCollection<Usuario>;
 
-  usuarioActual:Usuario;
-  rutaDeLaColeccion = '/usuarios';
-  referenciaColeccion:AngularFirestoreCollection<Usuario>;
-  referenciaBd:AngularFirestore;
+  referenciaBd: AngularFirestore;
 
-  constructor(private bd:AngularFirestore, public afAuth:AngularFireAuth) { 
-    
+  constructor(private bd: AngularFirestore, private authSvc:AuthService, private context: AngularFireDatabase) {
     this.referenciaBd = bd;
-    this.referenciaColeccion = bd.collection(this.rutaDeLaColeccion);
+    this.referenciaAlaColeccionPaciente = bd.collection(this.rutaDeLaColeccionPaciente);
+    this.referenciaAlaColeccionEspecialista = bd.collection(this.rutaDeLaColeccionEspecialista);
+    this.referenciaAlaColeccionUsuario = bd.collection(this.ruteDeLaColeccionUsuarios);
   }
 
-  Crear(usuario: Usuario): any {
-    return this.referenciaColeccion.add({ ...usuario });
-
+  CrearPaciente(paciente: Paciente): any {
+    
+    let id = this.bd.createId();
+    paciente.id = id;
+    return this.referenciaAlaColeccionUsuario.add({ ...paciente });
   }
 
-  public TraerTodos() {
-    return this.referenciaColeccion;
-  }
 
+  
+  RegistrarEspecialista(especialista) {
 
-  public BuscarUsuario(user: Usuario) {
-    return this.referenciaBd.collection(this.rutaDeLaColeccion, ref => ref.where("correo", "==", user.correo).where("clave", "==", user.clave));
-
-   
-
-  }
-
-  async Register(user:Usuario){
-    try{
-      return await this.afAuth.createUserWithEmailAndPassword(user.correo,user.clave);
-      
-    }
-    catch(error){
+    this.authSvc.GetCurrentUser().then((response: any) => {
+      const ref = this.bd.collection(`usuarios`).doc(response.uid);
+      ref.set({...especialista});
       return true;
-      switch(error.code){
-        case "auth/invalid-email":
-            //this.OpenToast("El email es invalido");
-            break;
-
-        case "auth/email-already-in-use":
-          //this.OpenToast("Ya existe un usuario con ese email");
-          break;
-
-        case "auth/weak-password":
-          //this.OpenToast("Su contraseña es muy debil");
-          break;
-
-        default:
-          //this.OpenToast("Complete los campos");
-          break;
-
-      } 
-    }
-  }
-
-
-  async send_verification(){
-      let user = this.afAuth.currentUser;
-      (await user).sendEmailVerification().then(function(){
-        //Email sent
-      }).catch(function(error){
-        //An error happened
-        window.alert("Error : "+ error.message);
       });
   }
+
+
+    
+  RegistrarPaciente(paciente) {
+
+    this.authSvc.GetCurrentUser().then((response: any) => {
+    const ref = this.bd.collection(`usuarios`).doc(response.uid);
+    ref.set({...paciente});
+    return true;
+    });
+    
+    
+  }
+
+
+
+
+  CrearEspecialista(especialista: Especialista): any {
+    let id = this.bd.createId();
+    especialista.id = id;
+    return this.referenciaAlaColeccionEspecialista.add({ ...especialista });
+  }
+
+
+
+  public TraerTodosPacientes() {
+    return this.referenciaAlaColeccionPaciente;
+  }
+
+  public TraerTodosUsuarios() {
+    return this.referenciaAlaColeccionUsuario;
+  }
+
+  public TraerTodosEspecialistas() {
+    return this.referenciaAlaColeccionEspecialista;
+  }
+
+
+ public BuscarUsuarioEsp(user: any) {
+    return this.referenciaBd.collection(this.rutaDeLaColeccionEspecialista, (ref) =>
+      ref.where('correo', '==', user.correo).where('clave', '==', user.clave)
+    );
+  } 
+
+  public BuscarUsuario(correo: any,clave:any) {
+    return this.referenciaBd.collection(this.rutaDeLaColeccionEspecialista, (ref) =>
+      ref.where('correo', '==', correo).where('clave', '==', clave)
+    );
+  } 
+
+  public BuscarUsuarioPac(user: any) {
+    return this.referenciaBd.collection(this.rutaDeLaColeccionPaciente, (ref) =>
+      ref.where('correo', '==', user.correo).where('clave', '==', user.clave)
+    );
+  } 
+
+
 }

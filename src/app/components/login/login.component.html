@@ -1,18 +1,20 @@
 <main class="form-signin text-center">
-    <form>
+    <form novalidate (ngSubmit)="onLogin()" [formGroup]="form">
+      <fieldset>
       <img class="mb-4 logo" src="../../../assets/logo.png" alt="" >
       <h1 class="h3 mb-3 fw-normal">Por favor, inicie sesion</h1>
   
       <div class="form-floating">
-        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-        <label for="floatingInput">Correo electrónico</label>
+        <input type="email" class="form-control" id="email" placeholder="Correo electrónico" formControlName="email" [class]="isValidField('email')">
+        <label for="email">Correo electrónico</label>
       </div>
       <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-        <label for="floatingPassword">Contraseña</label>
+        <input type="password" class="form-control" id="clave" placeholder="Password" formControlName="clave" [class]="isValidField('clave')">
+        <label for="clave">Contraseña</label>
       </div>
   
-      <button class="w-100 btn btn-lg btn-primary" type="submit">Iniciar Sesión</button>
+      <button class="w-100 btn btn-lg btn-primary" type="submit" [disabled]="form.invalid">Iniciar Sesión</button>
       <p class="mt-5 mb-3 text-muted">&copy;2021</p>
+    </fieldset>
     </form>
   </main>
