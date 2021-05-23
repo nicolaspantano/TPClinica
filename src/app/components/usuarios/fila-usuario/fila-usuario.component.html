@@ -1,0 +1,6 @@
+<td >{{unUsuario.nombre}}</td>
+<td > {{unUsuario.apellido}} </td>
+<td > {{unUsuario.rol}} </td>
+<td > 
+    <button *ngIf="unUsuario.rol=='Especialista'"type="button" class="btn btn-info btn-circle"   (click)="validarEspecialista(unUsuario)">Validar</button>
+</td>

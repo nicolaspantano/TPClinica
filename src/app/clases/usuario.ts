@@ -9,7 +9,8 @@ export class Usuario {
     dni:number;
     rol:string;
 
-    constructor(correo,clave,nombre,apellido,edad,dni,rol){
+    constructor(correo,clave,nombre,apellido,edad,dni,rol,id?){
+        this.id=id;
         this.correo=correo;
         this.clave=clave;
         this.nombre=nombre;

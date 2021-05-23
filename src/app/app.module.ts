@@ -9,12 +9,18 @@ import { RegistroComponent } from './components/registro/registro.component';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UsuariosComponent } from './components/usuarios/usuarios.component';
+import { FilaUsuarioComponent } from './components/usuarios/fila-usuario/fila-usuario.component';
+import { TablaUsuariosComponent } from './components/usuarios/tabla-usuarios/tabla-usuarios.component';
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginComponent,
-    RegistroComponent
+    RegistroComponent,
+    UsuariosComponent,
+    FilaUsuarioComponent,
+    TablaUsuariosComponent
     
   ],
   imports: [

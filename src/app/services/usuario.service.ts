@@ -18,7 +18,7 @@ export class UsuarioService {
   rutaDeLaColeccionEspecialista = '/especialistas';
   referenciaAlaColeccionPaciente: AngularFirestoreCollection<Paciente>;
   referenciaAlaColeccionEspecialista: AngularFirestoreCollection<Especialista>;
-  referenciaAlaColeccionUsuario: AngularFirestoreCollection<Usuario>;
+  referenciaAlaColeccionUsuario: AngularFirestoreCollection<any>;
 
   referenciaBd: AngularFirestore;
 
@@ -42,6 +42,7 @@ export class UsuarioService {
 
     this.authSvc.GetCurrentUser().then((response: any) => {
       const ref = this.bd.collection(`usuarios`).doc(response.uid);
+      console.log(especialista);
       ref.set({...especialista});
       return true;
       });
@@ -52,6 +53,7 @@ export class UsuarioService {
   RegistrarPaciente(paciente) {
 
     this.authSvc.GetCurrentUser().then((response: any) => {
+      paciente.id=response.uid;
     const ref = this.bd.collection(`usuarios`).doc(response.uid);
     ref.set({...paciente});
     return true;
@@ -61,6 +63,14 @@ export class UsuarioService {
   }
 
 
+  ActualizarEstadoEspecialista(especialista:Usuario){
+    console.log(especialista.id);
+    return this.referenciaAlaColeccionUsuario.doc(especialista.id).set({
+      aprobado:true
+    })
+
+    
+  }
 
 
   CrearEspecialista(especialista: Especialista): any {
