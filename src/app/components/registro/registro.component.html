@@ -120,6 +120,13 @@
 
   <div class="container">
 
+    <div class="row" *ngIf="this.tipo==''">
+      <div class="col-6">
+        <button class="btn btn-primary" (click)="this.tipo='Paciente'">Registrase como paciente</button>
+        <button class="btn btn-primary" (click)="this.tipo='Especialista'">Registrase como Especialista</button>
+
+      </div>
+    </div>
         <div class="row">
             <div class="col-6">
                 <h2 *ngIf="this.tipo=='Paciente'">Nuevo Paciente</h2>

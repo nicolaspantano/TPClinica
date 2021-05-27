@@ -4,12 +4,13 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegistroComponent } from './components/registro/registro.component';
 import { UsuariosComponent } from './components/usuarios/usuarios.component';
+import { GuardGuard } from './guards/guard.guard';
 
 const routes: Routes = [
   {path:'login',component:LoginComponent},
   {path:'',component:HomeComponent},
   {path:'registro',component:RegistroComponent},
-  {path:'usuarios',component:UsuariosComponent}
+  {path:'usuarios',component:UsuariosComponent,canActivate: [GuardGuard]}
 
 ];
 

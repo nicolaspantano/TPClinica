@@ -12,7 +12,7 @@ import {map} from "rxjs/operators";
 export class AuthService {
   emailSent = false;
   error: string;
-
+  rol : string;
   user = this.afAuth.authState.pipe(
     map(authState =>{
       if(!authState){
@@ -26,10 +26,13 @@ export class AuthService {
   constructor(public  afAuth: AngularFireAuth, private router: Router, private context: AngularFireDatabase) { }
 
   Login(email: string, password: string) {
-
+    
     return new Promise((resolve, rejected) => {
       this.afAuth.signInWithEmailAndPassword(email, password).then(response => {
+        localStorage.setItem('token',email);
         resolve(response);
+        
+        
       }, (error: any) => {
         console.log(error);
         switch (error.code) {
@@ -49,7 +52,7 @@ export class AuthService {
       });
 
     });
-
+    
   }
   //VIDOE YOOUTUBE
   /*Register(email:string, password:string){

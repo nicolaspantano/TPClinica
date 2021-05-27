@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import {AngularFirestore,AngularFirestoreCollection,} from '@angular/fire/firestore/';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Usuario } from '../clases/usuario';
+import { Observable } from 'rxjs';
 
 
 
@@ -22,13 +23,33 @@ export class UsuarioService {
 
   referenciaBd: AngularFirestore;
 
+  usuarios : Observable<any>;
+  listaUsuarios = [];
+  public usuarioActual;
   constructor(private bd: AngularFirestore, private authSvc:AuthService, private context: AngularFireDatabase) {
     this.referenciaBd = bd;
     this.referenciaAlaColeccionPaciente = bd.collection(this.rutaDeLaColeccionPaciente);
     this.referenciaAlaColeccionEspecialista = bd.collection(this.rutaDeLaColeccionEspecialista);
     this.referenciaAlaColeccionUsuario = bd.collection(this.ruteDeLaColeccionUsuarios);
+
+    this.usuarios = this.TraerTodosUsuarios().valueChanges();
+    this.usuarios.subscribe(usuarios =>{
+      this.listaUsuarios = usuarios;
+    },error => console.log(error));
+
+    
+    
   }
 
+  public setUsuarioActual(user){
+    this.usuarioActual=user;
+  }
+
+  BuscarUsuarioActual(){
+    
+      this.usuarioActual = this.listaUsuarios.filter(u => u.email == localStorage.getItem('token'));
+    
+  }
   CrearPaciente(paciente: Paciente): any {
     
     let id = this.bd.createId();
@@ -41,6 +62,7 @@ export class UsuarioService {
   RegistrarEspecialista(especialista) {
 
     this.authSvc.GetCurrentUser().then((response: any) => {
+      especialista.id=response.uid;
       const ref = this.bd.collection(`usuarios`).doc(response.uid);
       console.log(especialista);
       ref.set({...especialista});
@@ -56,6 +78,7 @@ export class UsuarioService {
       paciente.id=response.uid;
     const ref = this.bd.collection(`usuarios`).doc(response.uid);
     ref.set({...paciente});
+    
     return true;
     });
     
@@ -101,7 +124,7 @@ export class UsuarioService {
   } 
 
   public BuscarUsuario(correo: any,clave:any) {
-    return this.referenciaBd.collection(this.rutaDeLaColeccionEspecialista, (ref) =>
+    return  this.referenciaBd.collection(this.rutaDeLaColeccionEspecialista, (ref) =>
       ref.where('correo', '==', correo).where('clave', '==', clave)
     );
   } 
@@ -110,7 +133,12 @@ export class UsuarioService {
     return this.referenciaBd.collection(this.rutaDeLaColeccionPaciente, (ref) =>
       ref.where('correo', '==', user.correo).where('clave', '==', user.clave)
     );
-  } 
+  }
+  
+  public Logout(){
+    localStorage.clear();
+    this.authSvc.LogOutCurrentUser();
+  }
 
 
 }

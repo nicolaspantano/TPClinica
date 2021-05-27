@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
 
     let user = this.listaUsuarios.filter(u => u.id == usuario.user.uid);
     console.log(user)
-
+   
     if (user[0].rol == "Especialista") {
       if (user[0].aprobado == false) {
         Swal.fire({
@@ -69,10 +69,12 @@ export class LoginComponent implements OnInit {
         this.router.navigate(["/noHabilitado"]);
       }
       else {
+        this.userSrvc.setUsuarioActual(user);
         console.log('habilitado')
         this.router.navigate([""]);
       }
     } else {
+      this.userSrvc.setUsuarioActual(user);
       this.router.navigate([""]);
     }
 

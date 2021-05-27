@@ -64,10 +64,11 @@ export class RegistroComponent implements OnInit {
     private authSVC: AuthService
   ) {
 
-    this.tipo = 'Paciente'
+    this.tipo = ''
   }
 
   ngOnInit(): void {
+    this.usuarioSrv.Logout();
     this.initForm();
   }
 
@@ -114,10 +115,9 @@ export class RegistroComponent implements OnInit {
       this.dni = this.pacienteRegForm.value.dni;
       this.edad = this.pacienteRegForm.value.edad;
       this.obraSocial = this.pacienteRegForm.value.obraSocial;
-      /*this.foto1 = this.fotoCargada1;
-      this.foto2 = this.fotoCargada2;*/
       console.log(this.foto1,"y",this.foto2);
       this.registrarPaciente();
+
     }
   }
 
@@ -160,6 +160,7 @@ export class RegistroComponent implements OnInit {
         text: 'Se le ha enviado un mail de confirmacion, por favor, revise su casilla para poder ingresar',
         icon: 'success',
         didDestroy: () => {
+          
           this.router.navigateByUrl('');
         }
 
