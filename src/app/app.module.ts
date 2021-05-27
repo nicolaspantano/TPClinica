@@ -10,8 +10,10 @@ import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UsuariosComponent } from './components/usuarios/usuarios.component';
-import { FilaUsuarioComponent } from './components/usuarios/fila-usuario/fila-usuario.component';
-import { TablaUsuariosComponent } from './components/usuarios/tabla-usuarios/tabla-usuarios.component';
+import { TablaEspecialistasComponent } from './components/usuarios/tabla-especialistas/tabla-especialistas.component';
+import { TablaPacientesComponent } from './components/usuarios/tabla-pacientes/tabla-pacientes.component';
+import { FilaEspecialistaComponent } from './components/usuarios/fila-especialista/fila-especialista.component';
+import { FilaPacienteComponent } from './components/usuarios/fila-paciente/fila-paciente.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,8 +21,10 @@ import { TablaUsuariosComponent } from './components/usuarios/tabla-usuarios/tab
     LoginComponent,
     RegistroComponent,
     UsuariosComponent,
-    FilaUsuarioComponent,
-    TablaUsuariosComponent
+    TablaEspecialistasComponent,
+    TablaPacientesComponent,
+    FilaEspecialistaComponent,
+    FilaPacienteComponent
     
   ],
   imports: [

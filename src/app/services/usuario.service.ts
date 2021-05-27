@@ -48,6 +48,7 @@ export class UsuarioService {
   BuscarUsuarioActual(){
     
       this.usuarioActual = this.listaUsuarios.filter(u => u.email == localStorage.getItem('token'));
+      this.usuarioActual = this.usuarioActual[0];
     
   }
   CrearPaciente(paciente: Paciente): any {
@@ -70,7 +71,18 @@ export class UsuarioService {
       });
   }
 
+  RegistrarAdmin(paciente) {
 
+    this.authSvc.GetCurrentUser().then((response: any) => {
+      paciente.id=response.uid;
+    const ref = this.bd.collection(`usuarios`).doc(response.uid);
+    ref.set({...paciente});
+    
+    return true;
+    });
+    
+    
+  }
     
   RegistrarPaciente(paciente) {
 
@@ -88,10 +100,9 @@ export class UsuarioService {
 
   ActualizarEstadoEspecialista(especialista:Usuario){
     console.log(especialista.id);
-    return this.referenciaAlaColeccionUsuario.doc(especialista.id).set({
+    return this.referenciaAlaColeccionUsuario.doc(especialista.id).update({
       aprobado:true
     })
-
     
   }
 

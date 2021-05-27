@@ -37,7 +37,7 @@ export class GuardGuard implements CanActivate, CanActivateChild, CanDeactivate<
   }
 
   checkAdmin(){
-    if(this.userSvc.usuarioActual.rol="Admin"){
+    if(localStorage.getItem('rol')=="Admin"){
       return true;
     }
     return false;

@@ -1,0 +1,22 @@
+<table class="table text-center">
+	<thead>
+        <th>Imagen1</th>
+        <th>Imagen2</th>
+		<th>Nombre</th>
+		<th>Apellido</th>
+		<th>Edad</th>
+		<th>Dni</th>
+        <th>Obra Social</th>
+	</thead>
+  <tbody>
+  	
+
+<tr *ngFor="let paciente of listaPacientes" app-fila-paciente [unPaciente]="paciente">
+    <!--<app-fila-usuario [unUsuario]="usuario"></app-fila-usuario>-->
+   
+</tr>
+
+
+
+  </tbody> 
+</table>

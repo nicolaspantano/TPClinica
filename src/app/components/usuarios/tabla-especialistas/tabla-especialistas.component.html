@@ -1,0 +1,22 @@
+<table class="table text-center">
+	<thead>
+        <th>Imagen</th>
+		<th>Nombre</th>
+		<th>Apellido</th>
+		<th>Edad</th>
+		<th>Dni</th>
+		<th>Especialidad/es</th>
+        <th>Validar</th>
+	</thead>
+  <tbody>
+  	
+
+<tr *ngFor="let especialista of listaEspecialistas" app-fila-especialista [unEspecialista]="especialista">
+    <!--<app-fila-usuario [unUsuario]="usuario"></app-fila-usuario>-->
+   
+</tr>
+
+
+
+  </tbody> 
+</table>

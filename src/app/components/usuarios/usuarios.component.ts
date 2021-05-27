@@ -11,6 +11,9 @@ export class UsuariosComponent implements OnInit {
 
   usuarios: Observable<any[]>;
   listaUsuarios=[];
+  listaEspecialistas=[];
+  listaPacientes=[];
+  accion='';
   constructor(private userSvc:UsuarioService) {
     
    }
@@ -19,8 +22,12 @@ export class UsuariosComponent implements OnInit {
     this.usuarios = this.userSvc.TraerTodosUsuarios().valueChanges();
     this.usuarios.subscribe(usuarios =>{
       this.listaUsuarios = usuarios;
-      console.log(this.listaUsuarios);
+      this.listaPacientes=this.listaUsuarios.filter(u=>u.rol=="Paciente");
+      this.listaEspecialistas=this.listaUsuarios.filter(u=>u.rol=="Especialista");
     },error => console.log(error));
+
+    
+    
     
   }
 

@@ -1,0 +1,8 @@
+<td><img [src]="path" class="imagen-tabla"></td>
+<td>{{unEspecialista.nombre}}</td>
+<td>{{unEspecialista.apellido}}</td>
+<td>{{unEspecialista.edad}}</td>
+<td>{{unEspecialista.dni}}</td>
+<td>{{unEspecialista.especialidad}}</td>
+<td > <button *ngIf="verificarAprobado()"type="button" class="btn btn-info btn-circle"   (click)="validarEspecialista(unEspecialista)">Validar</button>
+</td>

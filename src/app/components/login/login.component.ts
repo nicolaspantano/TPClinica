@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.userSrvc.Logout();
     this.initForm();
     this.usuarios = this.userSrvc.TraerTodosUsuarios().valueChanges();
     this.usuarios.subscribe(usuarios =>{
@@ -69,11 +70,13 @@ export class LoginComponent implements OnInit {
         this.router.navigate(["/noHabilitado"]);
       }
       else {
-        this.userSrvc.setUsuarioActual(user);
+        localStorage.setItem('rol',user[0].rol);
         console.log('habilitado')
         this.router.navigate([""]);
       }
     } else {
+      localStorage.setItem('rol',user[0].rol);
+
       this.userSrvc.setUsuarioActual(user);
       this.router.navigate([""]);
     }

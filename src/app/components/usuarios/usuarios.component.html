@@ -1,3 +1,41 @@
 <div class="container">
-    <app-tabla-usuarios [listaUsuarios]="listaUsuarios"></app-tabla-usuarios>
+
+    <div class="row margen">
+
+        <div class="padre text-center" *ngIf="this.accion==''">
+            <div class="hijo">
+              <h2>¿Que desea realizar?</h2>
+              <div class="row" style="margin-top: 20px;">
+                <div class="col">
+                    <button class="btn btn-primary"  (click)="this.accion='especialistas'">Ver Especialistas</button>
+                    <button class="btn btn-primary"  (click)="this.accion='pacientes'">Ver Pacientes</button>
+                    <button class="btn btn-primary"  (click)="this.accion='registro'">Nuevo Usuario</button>
+                </div>
+              </div>
+              
+              
+            </div>
+        </div>
+
+        <div class="col-6" style="text-align: left;" *ngIf="this.accion!=''">
+            <button class="btn btn-primary" *ngIf="this.accion!='especialistas'" (click)="this.accion='especialistas'">Especialistas</button>
+            <button class="btn btn-primary" *ngIf="this.accion!='pacientes'" (click)="this.accion='pacientes'">Pacientes</button>
+            <button class="btn btn-primary" *ngIf="this.accion!='registro'" (click)="this.accion='registro'">Nuevo Usuario</button>
+
+
+        </div>
+        <div class="col-12" *ngIf="this.accion=='especialistas'">
+            <h1>Especialistas</h1>
+            <app-tabla-especialistas [listaEspecialistas]="listaEspecialistas"></app-tabla-especialistas>
+        </div>
+
+        <div class="col-12" *ngIf="this.accion=='pacientes'">
+            <h1>Pacientes</h1>
+            <app-tabla-pacientes [listaPacientes]="listaPacientes"></app-tabla-pacientes>
+        </div>
+
+        <div class="col-12 " *ngIf="this.accion=='registro'">
+            <app-registro [admin]=true></app-registro>
+        </div>
+    </div>
 </div>

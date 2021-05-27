@@ -1,141 +1,32 @@
-<!--<div class="container">
-    <div class="row">
-        <div class="col-6">
-            <h2 *ngIf="this.tipo=='Paciente'">Nuevo Paciente</h2>
-            <h2 *ngIf="this.tipo=='Especialista'">Nuevo Especialista</h2>
-
-        </div>
-        <div class="col-6" style="text-align: end;">
-            <button class="btn btn-primary" *ngIf="this.tipo=='Especialista'" (click)="this.tipo='Paciente'">Registrar Paciente</button>
-            <button class="btn btn-primary" *ngIf="this.tipo=='Paciente'" (click)="this.tipo='Especialista'">Registrar Especialista</button>
-
-        </div>
-    </div>
-    
-    
-
-    
-    <form novalidate (ngSubmit)="onRegisterPaciente()" [formGroup]="pacienteRegForm" *ngIf="this.tipo == 'Paciente'">
-        <fieldset>
-        <div class="row row-form form-group">
-            <div class="col-6">
-                <label>Nombre</label>
-                <input type="text" formControlName="nombre" class="form-control" id="nombre" placeholder="Nombre" [class]="isValidPaciente('nombre')"/>
-            </div>
-
-            <div class="col-6">
-                <label>Apellido</label>
-                <input type="text" formControlName="apellido" class="form-control" id="apellido" placeholder="Apellido" [class]="isValidPaciente('apellido')"/>
-            </div>
-            
-        </div>
-        <div class="row row-form form-group">
-            <div class="col-6">
-                <label>DNI</label>
-                <input type="text" formControlName="dni" class="form-control" id="dni" placeholder="DNI" [class]="isValidPaciente('dni')"/>
-            </div>
-            <div class="col-6">
-                <label>Edad</label>
-                <input type="number" formControlName="edad" class="form-control" id="edad" placeholder="Edad" [class]="isValidPaciente('edad')"/>
-            </div>
-            
-        </div>
-
-        <div class="row row-form form-group">
-            <div class="col-6">
-                <label>Email</label>
-                <input type="correo" formControlName="correo" id="correo" placeholder="Correo electrónico" class="form-control" [class]="isValidPaciente('email')"/>
-            </div>
-            <div class="col-6">
-                <label>Contraseña</label>
-                <input type="password" formControlName="clave" id="clave" placeholder="Contraseña" class="form-control" [class]="isValidPaciente('clave')"/>
-            </div>
-            
-        </div>
-
-
-        <!--<div class="row row-form form-group">
-            <div class="col-6">
-                <label class="custom-file-label" for="inputGroupFile01">Foto</label>
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                </div>
-                <div class="custom-file">
-                  <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                  
-                </div>
-              </div>
-
-            </div>
-            <div class="col-6">
-                <label class="custom-file-label" for="inputGroupFile01">Foto</label>
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                </div>
-                <div class="custom-file">
-                  <input type="file" class="custom-file-input" id="inputGroupFile02" aria-describedby="inputGroupFileAddon01"> 
-                </div>
-              </div>
-            </div>
-          </div>
-        
-
-          <div class="row row-form form-group">
-            <div class="col-6">
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                </div>
-                <div class="custom-file">
-                  <input type="file" (change)="CambioFotos($event,1)" id="foto1" class="sinError">
-
-                </div>
-              </div>
-
-            </div>
-            <div class="col-6">
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                </div>
-                <div class="custom-file">
-                  <input type="file" (change)="CambioFotos($event,2)" id="foto2" class="sinError">
-
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          
-          <button type="submit" class="btn btn-primary botonesLanding animate__animated animate__backInLeft " [disabled]="pacienteRegForm.invalid">
-            Registrarse
-          </button>
-          <button type="button" class="btn btn-success botonesLanding animate__animated animate__backInRight" routerLink="../login">
-            Inicio de sesion
-          </button>
-        
-		</fieldset>
-    </form>
-    
-</div>-->
-
   <div class="container">
 
-    <div class="row" *ngIf="this.tipo==''">
-      <div class="col-6">
-        <button class="btn btn-primary" (click)="this.tipo='Paciente'">Registrase como paciente</button>
-        <button class="btn btn-primary" (click)="this.tipo='Especialista'">Registrase como Especialista</button>
-
-      </div>
+    <div class="padre text-center" *ngIf="this.tipo==''">
+        <div class="hijo">
+          <h2>¿Que tipo de usuario desea registrar?</h2>
+          <div class="row">
+            <div class="col">
+              <button class="btn btn-primary"  (click)="this.tipo='Paciente'">Registrar Paciente</button>
+                <button class="btn btn-primary"  (click)="this.tipo='Especialista'">Registrar Especialista</button>
+                <button class="btn btn-primary"  (click)="this.tipo='Admin'">Registrar Admin</button>
+            </div>
+          </div>
+          
+          
+        </div>
     </div>
-        <div class="row">
+        <div class="row" *ngIf="this.tipo!=''">
             <div class="col-6">
                 <h2 *ngIf="this.tipo=='Paciente'">Nuevo Paciente</h2>
                 <h2 *ngIf="this.tipo=='Especialista'">Nuevo Especialista</h2>
+                <h2 *ngIf="this.tipo=='Admin'">Nuevo Administrador</h2>
+
     
             </div>
             <div class="col-6" style="text-align: end;">
-                <button class="btn btn-primary" *ngIf="this.tipo=='Especialista'" (click)="this.tipo='Paciente'">Registrar Paciente</button>
-                <button class="btn btn-primary" *ngIf="this.tipo=='Paciente'" (click)="this.tipo='Especialista'">Registrar Especialista</button>
+                <button class="btn btn-primary" *ngIf="this.tipo!='Paciente'" (click)="this.tipo='Paciente'">Registrar Paciente</button>
+                <button class="btn btn-primary" *ngIf="this.tipo!='Especialista'" (click)="this.tipo='Especialista'">Registrar Especialista</button>
+                <button class="btn btn-primary" *ngIf="this.tipo!='Admin'&&this.admin==true" (click)="this.tipo='Admin'">Registrar Admin</button>
+
     
             </div>
         </div>
@@ -391,6 +282,127 @@
               Registrarse
             </button>
             <br>
+          </fieldset>
+        </form>
+
+        <form class="animate__animated animate__backInDown" novalidate (ngSubmit)="onRegisterAdmin()" [formGroup]="adminRegForm" *ngIf="this.tipo == 'Admin'">
+          <fieldset>
+            
+            <div class="row row-form form-group">
+  
+              <div class="col-6">
+                <label>Nombre</label>
+                <input type="text" class="form-control" id="nombre" placeholder="Nombre" formControlName="nombre"
+                  [class]="isValidAdmin('nombre')" />
+                <div class="invalid-feedback" style="font-family: sans-serif;">
+                  <span
+                    *ngIf="adminRegForm.controls.nombre.errors?.required && adminRegForm.controls.nombre.touched">
+                    Por favor ingrese su nombre
+                  </span>
+                </div>
+              </div>
+  
+  
+              <div class="col-6">
+                <label>Apellido</label>
+                <input type="text" class="form-control" id="apellido" placeholder="Apellido" formControlName="apellido"
+                  [class]="isValidAdmin('apellido')" />
+                <div class="invalid-feedback" style="font-family: sans-serif;">
+                  <span class="invalid"
+                    *ngIf="adminRegForm.controls.apellido.errors?.required && adminRegForm.controls.apellido.touched">El
+                    apellido es requerido
+                  </span>
+                </div>
+              </div>
+            </div>
+  
+  
+            <div class="row row-form form-group">
+              <div class="col-2">
+                <label>Edad</label>
+                <input type="number" class="form-control" id="edad" placeholder="Edad" formControlName="edad"
+                  [class]="isValidAdmin('edad')" />
+                <div class="invalid-feedback" style="font-family: sans-serif;">
+                  <span *ngIf="adminRegForm.get('edad').errors?.required">
+                    Por favor ingrese su edad
+                  </span>
+                </div>
+              </div>
+  
+  
+              <div class="col-5">
+                <label>DNI</label>
+                <input type="number" class="form-control" id="dni" placeholder="DNI" formControlName="dni"
+                  [class]="isValidAdmin('dni')" />
+                <div class="invalid-feedback" style="font-family: sans-serif;">
+                  <span *ngIf="adminRegForm.get('dni').errors?.required">
+                    Por favor ingrese su documento
+                  </span>
+  
+                </div>
+              </div>
+
+
+            </div>
+  
+  
+            <div class="form-group row row-form">
+
+                <div class="col-6">
+                    <label>Correo electrónico</label>
+                    <input type="correo" class="form-control" id="correo" placeholder="Correo electrónico" formControlName="correo"
+                      [class]="isValidAdmin('correo')" />
+                    <div class="invalid-feedback" style="font-family: sans-serif;">
+                      <span *ngIf="adminRegForm.get('correo').errors?.required">
+                        Por favor ingrese su correo
+                      </span>
+                      <span *ngIf="adminRegForm.get('correo').errors?.pattern">
+                        Debe ser una direccion valida
+                      </span>
+                    </div>
+                  </div>
+
+                <div class="col-6">
+                    <label>Contraseña</label>
+                    <input type="password" class="form-control" id="clave" placeholder="Contraseña" formControlName="clave"
+                [class]="isValidAdmin('clave')" />
+              <div class="invalid-feedback" style="font-family: sans-serif;">
+                <span *ngIf="adminRegForm.get('clave').errors?.required">
+                  Por favor ingrese su clave
+                </span>
+              </div>
+                </div>
+
+                
+            </div>
+  
+            
+  
+
+  
+  
+            <div class="row row-form form-group">
+                
+              <div class="col-6">
+                <label>Imagen 1</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" (change)="CambioFotos($event,1)" id="foto1" class="sinError">
+  
+                  </div>
+                </div>
+  
+              </div>
+
+            </div>
+  
+            <button type="submit" class="btn btn-primary botonesLanding animate__animated animate__backInLeft " [disabled]="adminRegForm.invalid">
+              Registrar
+            </button>
+            <br>
+            
           </fieldset>
         </form>
   
