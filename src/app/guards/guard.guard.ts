@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, CanDeactivate, CanLoad, Route, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, CanDeactivate, CanLoad, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { UsuarioService } from '../services/usuario.service';
@@ -9,14 +9,23 @@ import { UsuarioService } from '../services/usuario.service';
 })
 export class GuardGuard implements CanActivate, CanActivateChild, CanDeactivate<unknown>, CanLoad {
 
-  constructor(private authSvc:AuthService,private userSvc:UsuarioService){}
+  constructor(private authSvc:AuthService,private userSvc:UsuarioService,private router:Router){}
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if(route.url[0].path="usuarios"){
-      return this.checkAdmin();
+    
+    if(localStorage.getItem('token')){
+      console.log(localStorage.getItem('token'));
+
+      if(this.router.url=="usuarios"){
+        return this.checkAdmin();
+      }
+      return true;
     }
-    return true
+    this.router.navigate(['login']);
+
+    
+    return false;
   }
   canActivateChild(
     childRoute: ActivatedRouteSnapshot,

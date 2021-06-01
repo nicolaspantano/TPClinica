@@ -8,7 +8,7 @@ import { GuardGuard } from './guards/guard.guard';
 
 const routes: Routes = [
   {path:'login',component:LoginComponent},
-  {path:'',component:HomeComponent},
+  {path:'',component:HomeComponent,canActivate: [GuardGuard]},
   {path:'registro',component:RegistroComponent},
   {path:'usuarios',component:UsuariosComponent,canActivate: [GuardGuard]}
 

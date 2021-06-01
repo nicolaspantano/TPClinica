@@ -14,6 +14,9 @@ import { TablaEspecialistasComponent } from './components/usuarios/tabla-especia
 import { TablaPacientesComponent } from './components/usuarios/tabla-pacientes/tabla-pacientes.component';
 import { FilaEspecialistaComponent } from './components/usuarios/fila-especialista/fila-especialista.component';
 import { FilaPacienteComponent } from './components/usuarios/fila-paciente/fila-paciente.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {DemoMaterialModule} from './material-module/material-module.module';
+import { PedirTurnoComponent } from './components/pedir-turno/pedir-turno.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,7 +27,8 @@ import { FilaPacienteComponent } from './components/usuarios/fila-paciente/fila-
     TablaEspecialistasComponent,
     TablaPacientesComponent,
     FilaEspecialistaComponent,
-    FilaPacienteComponent
+    FilaPacienteComponent,
+    PedirTurnoComponent
     
   ],
   imports: [
@@ -32,7 +36,9 @@ import { FilaPacienteComponent } from './components/usuarios/fila-paciente/fila-
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule
+    //DemoMaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]

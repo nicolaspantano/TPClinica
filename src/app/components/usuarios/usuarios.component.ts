@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { EspecialidadesService } from 'src/app/services/especialidades.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
@@ -14,7 +15,7 @@ export class UsuariosComponent implements OnInit {
   listaEspecialistas=[];
   listaPacientes=[];
   accion='';
-  constructor(private userSvc:UsuarioService) {
+  constructor(private userSvc:UsuarioService,private especSvc:EspecialidadesService) {
     
    }
 
@@ -26,10 +27,17 @@ export class UsuariosComponent implements OnInit {
       this.listaEspecialistas=this.listaUsuarios.filter(u=>u.rol=="Especialista");
     },error => console.log(error));
 
+    /*this.listaUsuarios.forEach(element => {
+      element.especialidad=this.especSvc.TraerEspecialidadesByDescripcion(element.descripcion);
+      console.log("Element.especialidad: ",element.especialidad);
+    });*/
     
+
+      
     
     
   }
+
 
   tomarEspecialistaParaValidar(especialista){
 

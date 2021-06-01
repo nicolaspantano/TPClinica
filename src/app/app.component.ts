@@ -12,7 +12,6 @@ export class AppComponent {
 
   constructor(private userSvc:UsuarioService,private router:Router){}
   verificarLogin(){
-    console.log(localStorage.getItem('token'));
     if(localStorage.getItem('token')){
       
       return true;

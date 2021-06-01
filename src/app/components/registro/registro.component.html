@@ -1,5 +1,6 @@
   <div class="container">
 
+    
     <div class="padre text-center" *ngIf="this.tipo==''">
         <div class="hijo">
           <h2>¿Que tipo de usuario desea registrar?</h2>
@@ -7,7 +8,7 @@
             <div class="col">
               <button class="btn btn-primary"  (click)="this.tipo='Paciente'">Registrar Paciente</button>
                 <button class="btn btn-primary"  (click)="this.tipo='Especialista'">Registrar Especialista</button>
-                <button class="btn btn-primary"  (click)="this.tipo='Admin'">Registrar Admin</button>
+                <button class="btn btn-primary"  *ngIf="this.admin" (click)="this.tipo='Admin'">Registrar Admin</button>
             </div>
           </div>
           
@@ -257,25 +258,30 @@
   
             <div class="form-group row row-form">
                 <div class="col-6">
-                    <input type="text" class="form-control" id="especialidades" placeholder="Especialidades" formControlName="especialidades"
-                    [class]="isValidEspecialista('especialidades')" />
-                  <div class="invalid-feedback" style="font-family: sans-serif;">
-                    <span *ngIf="especialistaRegForm.get('especialidades').errors?.required">
-                      Por favor ingrese su especialidad
-                    </span>
-                  </div>
+                  
+                  <select multiple="multiple" class="form-control" id="especialidades" required>
+                    <option *ngFor="let espec of especialidades" [value]="espec" (mousedown)="onMouseDown($event, espec)" (mousemove)="$event.preventDefault()">{{espec.descripcion}}</option>
+                  </select>
+
                 </div>
                 <div class="col-6">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                        </div>
-                        <div >
-                          <input type="file" (change)="CambioFotos($event,1)" id="foto1" class="sinError">
-                   
-                        </div>
-                      </div>
+                  <h5>Otra/s especialidad/es <span style="font-size:70%;font-weight:normal;">En caso de ser mas de una, ingreselas separadas por ","</span></h5>
+                  <input type="text"  placeholder="Ejemplo UnaEspecialidad,OtraEspecialidad" class="form-control" id="otras" formControlName="otras" [class]="isValidEspecialista('otras')">
+                  
+                    
                 </div>
  
+            </div>
+
+            <div class="form-group row row-form">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                </div>
+                <div >
+                  <input type="file" (change)="CambioFotos($event,1)" id="foto1" class="sinError">
+           
+                </div>
+              </div>
             </div>
   
             <button type="submit" class="btn btn-primary botonesLanding animate__animated animate__backInLeft" [disabled]="especialistaRegForm.invalid">

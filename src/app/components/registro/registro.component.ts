@@ -1,7 +1,7 @@
 import { Especialista } from './../../clases/especialista';
 import { AuthService } from './../../services/auth.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Paciente } from './../../clases/paciente';
 
@@ -12,6 +12,8 @@ import * as firebase from 'firebase';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { Admin } from 'src/app/clases/admin';
 import { EspecialidadesService } from 'src/app/services/especialidades.service';
+import { Observable } from 'rxjs';
+import { Especialidad } from 'src/app/clases/especialidad';
 
 
 @Component({
@@ -51,8 +53,10 @@ export class RegistroComponent implements OnInit {
   obraSocial: string;
 
   especialidades: any;
-
-
+  especialidades$:Observable<any[]>;
+  especialidadesElegidas=[];
+  otrasEspecialidades:string;
+  arrayOtras=[];
   private isEmail = /\S+@\S+\.\S+/;
 
 
@@ -77,22 +81,24 @@ export class RegistroComponent implements OnInit {
       this.usuarioSrv.Logout();
 
     }
-    this.initForm();
+    this.initForm();             
+    this.especialidades$=this.especSvc.TraerEspecialidades().valueChanges();
+    this.especialidades$.subscribe(especialidades => {
+      this.especialidades = especialidades;
+    })
+    
     
   }
 
   CambioFotos(e, numero) {
     if (numero == 1) {
       this.foto1 = e.target.files[0];
-      console.log(this.foto1);
     } else {
       this.foto2 = e.target.files[0];
-      console.log(this.foto2);
     }
   }
 
   SubirFotos(id: string) {
-    console.log("Subir Fotos: Foto1: ",this.foto1," Foto2: ",this.foto2);
     if (this.foto1) {
       this.fotoCargada1 = `/usuarios/${id}/${1}`;
       this.storage.upload(this.fotoCargada1, this.foto1);
@@ -120,7 +126,7 @@ export class RegistroComponent implements OnInit {
       this.dni = this.pacienteRegForm.value.dni;
       this.edad = this.pacienteRegForm.value.edad;
       this.obraSocial = this.pacienteRegForm.value.obraSocial;
-      console.log(this.foto1,"y",this.foto2);
+
       this.registrarPaciente();
 
     }
@@ -136,7 +142,7 @@ export class RegistroComponent implements OnInit {
       this.clave = this.adminRegForm.value.clave;
       this.dni = this.adminRegForm.value.dni;
       this.edad = this.adminRegForm.value.edad;
-      console.log(this.foto1,"y",this.foto2);
+
       this.registrarAdmin();
 
     }
@@ -154,10 +160,9 @@ export class RegistroComponent implements OnInit {
       this.clave = this.especialistaRegForm.value.clave;
       this.edad = this.especialistaRegForm.value.edad;
       this.dni = this.especialistaRegForm.value.dni;
-      this.especialidades = this.especialistaRegForm.value.especialidades;
-      //this.foto1 = this.fotoCargada1;
 
-
+      this.arrayOtras=this.especialistaRegForm.value.otras.split(', ');
+      this.especialidades=this.especialidadesElegidas.concat(this.arrayOtras);
       this.registrarEspecialista();
     }
   }
@@ -292,7 +297,8 @@ export class RegistroComponent implements OnInit {
       apellido: ['', [Validators.required]],
       edad: ['', [Validators.required]],
       dni: ['', [Validators.required]],
-      especialidades: ['', [Validators.required]]
+      otras:['']
+      
     });
 
     this.adminRegForm = this.fb.group({
@@ -306,7 +312,19 @@ export class RegistroComponent implements OnInit {
   }
 
 
-
+  public onMouseDown(event: MouseEvent, item) {
+    event.preventDefault();
+    event.target['selected'] = !event.target['selected'];
+    if(event.target['selected']) {
+      this.especialidadesElegidas.push(item.descripcion);
+      
+    } else {
+      let index = this.especialidadesElegidas.indexOf(item.descripcion);
+      if(index > -1) {
+          this.especialidadesElegidas.splice(index,1);
+      }
+    }
+  }
 
   /*alert(icon: SweetAlertIcon, text: string) {
     const Toast = Swal.mixin({

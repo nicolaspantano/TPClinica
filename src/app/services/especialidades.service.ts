@@ -1,5 +1,7 @@
+import { isFromDtsFile } from '@angular/compiler-cli/src/ngtsc/util/src/typescript';
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+
 import { Observable } from 'rxjs';
 import { Especialidad } from '../clases/especialidad'
 @Injectable({
@@ -22,18 +24,39 @@ export class EspecialidadesService {
   }
 
   TraerEspecialidades(){
-    return this.listadoEspecialidades; 
+    //return this.listadoEspecialidades; 
+    return this.refenciaALaColeccion;
   }
-
-  AgregarEspecialidad(especialidad:Especialidad){
-    especialidad.id=this.bd.createId();
-    this.refenciaALaColeccion.add({...especialidad});
-  }
-
-  ValidarEspecialidad(especialidad:Especialidad){
-    let espec = this.referenciaBd.collection(this.rutaDeLaColeccion, (ref) =>
-    ref.where('descripcion', '==', especialidad.descripcion)
+  TraerEspecialidadesAprobadas(){
+    //return this.listadoEspecialidades; 
+    let referenciaAprobadas = this.referenciaBd.collection(this.rutaDeLaColeccion, (ref) =>
+    ref.where('aprobada', '==', true)
   );
-    this.refenciaALaColeccion.doc(espec.uid).update({aprobada:true});
+   return referenciaAprobadas;
+  
+  }
+
+  AgregarEspecialidad(especialidad){
+    let id=this.bd.createId();
+    this.bd.collection('especialidades')
+    .doc(id)
+    .set({
+      descripcion: especialidad,
+      id: id,
+    });
+  }
+
+
+
+  TraerEspecialidadesByDescripcion(descripcion){
+    let retorno=[];
+    descripcion.forEach(element => {
+      let espec = this.referenciaBd.collection(this.rutaDeLaColeccion, (ref) => ref.where('descripcion','==',element));
+      retorno.push(espec);
+    });
+    
+  
+  return retorno
+
   }
 }
